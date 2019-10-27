@@ -1,18 +1,42 @@
 ﻿using System;
-using NN.ActivationFunctions;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace NN
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            var nn = new NetworkBuilder()
-                .AddLayer(2, 2, Functions.Sigmoid)
-                .AddLayer(1, 2, Functions.Sigmoid)
-                .Build();
+        private const string TrainFile = "mnist_train.csv";
+        private const string TestFile = "mnist_test.csv";
 
-            Console.WriteLine("Hello World!");
+        static async Task Main(string[] args)
+        {
+            var csvReader = new CsvReader();
+
+            var trainSets = await csvReader.Read(TrainFile);
+            var testSets = await csvReader.Read(TestFile);
+
+            var nn = new Network(784, 30, 10);
+
+            var error = 0.0;
+            var count = 0;
+            do
+            {
+                count++;
+
+                var sw = Stopwatch.StartNew();
+
+                error = nn.Train(trainSets, testSets);
+
+                sw.Stop();
+                Console.WriteLine(sw.ElapsedMilliseconds);
+
+                Console.WriteLine($"Count: {count} - MSE: {error}.");
+            } while (error > 0.001);
+
+            Console.WriteLine(nn.Save());
+
+            Console.ReadLine();
         }
     }
 }
