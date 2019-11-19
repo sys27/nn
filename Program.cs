@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using NN.Data;
+using NN.LearningAlgorithms;
 
 namespace NN
 {
@@ -17,6 +19,7 @@ namespace NN
             var testSets = await csvReader.Read(TestFile);
 
             var nn = new Network(784, 30, 10);
+            var bp = new BackpropagationAlgorithm(nn);
 
             var error = 0.0;
             var count = 0;
@@ -26,7 +29,7 @@ namespace NN
 
                 var sw = Stopwatch.StartNew();
 
-                error = nn.Train(trainSets, testSets);
+                error = bp.Train(trainSets, testSets);
 
                 sw.Stop();
                 Console.WriteLine(sw.ElapsedMilliseconds);

@@ -1,4 +1,4 @@
-namespace NN
+namespace NN.Data
 {
     public struct DataSet
     {
