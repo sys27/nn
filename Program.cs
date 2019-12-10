@@ -35,7 +35,7 @@ namespace NN
                 Console.WriteLine(sw.ElapsedMilliseconds);
 
                 Console.WriteLine($"Count: {count} - MSE: {error}.");
-            } while (error > 0.001);
+            } while (error > 0.005);
 
             Console.WriteLine(nn.Save());
 

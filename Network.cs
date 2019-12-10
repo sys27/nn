@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.Json;
 using Troschuetz.Random.Distributions.Continuous;
 using Troschuetz.Random.Generators;
-using NN.Data;
 using NN.ActivationFunctions;
 
 namespace NN
@@ -57,21 +53,6 @@ namespace NN
             return inputs;
         }
 
-        public string Save()
-        {
-            var configuration = new Configuration { Weights = this.weights, Biases = this.biases };
-
-            return JsonSerializer.Serialize(configuration);
-        }
-
-        public void Load(string json)
-        {
-            var configuration = JsonSerializer.Deserialize<Configuration>(json);
-
-            this.weights = configuration.Weights;
-            this.biases = configuration.Biases;
-        }
-
         public double[] FeedForward(double[][] layer, double[] layerBiases, double[] inputs)
         {
             var results = new double[layer.Length];
@@ -95,6 +76,21 @@ namespace NN
             }
 
             return results;
+        }
+
+        public string Save()
+        {
+            var configuration = new Configuration { Weights = this.weights, Biases = this.biases };
+
+            return JsonSerializer.Serialize(configuration);
+        }
+
+        public void Load(string json)
+        {
+            var configuration = JsonSerializer.Deserialize<Configuration>(json);
+
+            this.weights = configuration.Weights;
+            this.biases = configuration.Biases;
         }
 
         public double[][][] Weights => this.weights;
